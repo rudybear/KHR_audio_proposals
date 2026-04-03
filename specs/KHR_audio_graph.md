@@ -603,6 +603,12 @@ Exact behavior is implementation-defined.
 | `channelmixer` | `GainNode` with explicit channel config | |
 | `audiomixer` | Connection summing into `GainNode` | |
 
+### Informative Mixing Behavior
+
+When multiple graph outputs target the same `KHR_audio_emitter` emitter, an implementation can realize that emitter as a shared input bus and connect each upstream graph output to that bus. In Web Audio terms, this is naturally expressed by connecting multiple upstream nodes to the same `GainNode` or emitter input node, which sums those signals by default before emitter gain and spatialization are applied.
+
+This informative mapping makes the normative fan-in rule practical for implementations and aligns multi-graph emitter routing with normal Web Audio connection semantics.
+
 ---
 
 ## 12. glTF Object Model
