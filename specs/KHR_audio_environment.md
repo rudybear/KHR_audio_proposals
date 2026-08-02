@@ -363,10 +363,10 @@ Doppler shift is declared per environment and disabled by default (matching the 
 **Model (normative)**: for each positional emitter, the rendered pitch factor is
 
 ```
-pitch = (c − s·vL) / (c − s·vS)
+pitch = (c + s·vL) / (c − s·vS)
 ```
 
-where `c` is `speedOfSound`, `s` is `scale`, `vL` is the radial velocity of the listener toward the emitter, and `vS` is the radial velocity of the emitter toward the listener (both derived from node transforms; positive = approaching). Implementations MUST clamp the denominator to remain positive and SHOULD smooth velocity estimates across frames. Individual emitters may opt out via `dopplerEnabled: false` (3.2).
+where `c` is `speedOfSound`, `s` is `scale`, `vL` is the radial velocity of the listener toward the emitter, and `vS` is the radial velocity of the emitter toward the listener (both derived from node transforms; positive = approaching, so approach raises pitch from either side). Implementations MUST clamp the denominator to remain positive (and the numerator non-negative) and SHOULD smooth velocity estimates across frames. Individual emitters may opt out via `dopplerEnabled: false` (3.2).
 
 ---
 
