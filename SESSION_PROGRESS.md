@@ -132,3 +132,32 @@ Full analysis document: `analysis/spec_comparison_and_gap_analysis.md`
 - [ ] Build and test
 - [ ] Review spec proposals if changes needed during implementation
 - [ ] Iterate on specs based on implementation feedback
+
+---
+
+## Session 2: 2026-08-02 — Environment v2 (branch `feature/environment-v2`)
+
+### Research pass completed
+- Gap analyses of KHR_audio_emitter (#2137) and KHR_audio_graph (#2572) vs W3C Web Audio 1.0/1.1, X3D 4.0 (ISO/IEC 19775-1:2023) Sound component, USD ecosystem (core UsdMediaSpatialAudio, Omniverse, Apple RealityKit/PHASE), and engine baseline (Wwise/FMOD/Steam Audio/Project Acoustics/MPEG-I).
+- Analysis docs live in the parent workspace: `../0{1..6}-*.md` (current state, emitter gaps E1–E12, graph gaps G1–G11, USD comparison, environment proposals P1–P14, structured feedback).
+
+### Design decisions (user-confirmed)
+1. Reverb vocabulary: abstract/generic parameter set (I3DL2-aligned, glTF units) + named presets; detailed models attach via `extensions` on reverb/environment.
+2. Scope: Tier 1 (listener lifecycle, reverb+presets, per-emitter direct/reverb sends, normative zones) **plus** P5 Doppler, P6 listener-bus graph hook, P7 air absorption, P8 cone low-pass.
+3. Zones: box + sphere with blendDistance/priority; mesh shapes via future extensions.
+4. HRTF: keep audio[] + profile; SOFA (AES69) named in future work.
+
+### Spec rewritten: `specs/KHR_audio_environment.md`
+- Normative listener lifecycle (activeListener → active-camera binding → first binding → implicit viewer listener), listener gain, HRTF fallback rule.
+- Reverb: preset + decayTime/decayHFRatio/reflectionsGain+Delay/reverbGain+Delay/diffusion/density/mix; IR mode with normalize; informative preset value table.
+- Doppler per environment (enabled/scale/speedOfSound) + normative pitch formula + per-emitter opt-out.
+- Emitter integration: directLevel/reverbLevel sends + forced environment; positional: spatialization override, distanceCurve, airAbsorption, coneOuterCutoff.
+- Zones: shape (box/sphere), blendDistance, priority, normative listener-position selection rules.
+- Listener-bus graph hook (§3.5) for master processing via KHR_audio_graph.
+- Updated Object Model pointers; Future Work section (ambient beds, acoustic materials, rooms/portals, voice mgmt, SOFA, mesh zones, AR).
+
+### Schemas added: `specs/schema/KHR_audio_environment/` (12 files, all validated)
+
+### Next
+- [ ] Prototype v2 features in AudioGraphJS branch `feature/environment-v2`
+- [ ] Iterate spec from implementation feedback; then convert to glTF-repo PR layout
